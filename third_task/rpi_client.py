@@ -51,9 +51,11 @@ try:
                 if RFID_UID == uid:
                     GPIO.output(blueLedPin, GPIO.LOW)
                     GPIO.output(greenLedPin, GPIO.HIGH)
+                    current_color = 'blue'
                 else:
                     GPIO.output(greenLedPin, GPIO.LOW)
                     GPIO.output(blueLedPin, GPIO.HIGH)
+                    current_color = 'green'
 
                 if current_color is not None:
                     client.publish('itis/team_9/led/color', f'Color changed to: {current_color}')
