@@ -19,7 +19,7 @@ def on_subscribe(client, userdata, mid, granted_qos, properties=None):
 
 
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload.encode('utf-8')))
+    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload.decode('utf-8')))
 
 
 client = paho.Client(client_id="RPI Client", userdata=None, protocol=paho.MQTTv5)
