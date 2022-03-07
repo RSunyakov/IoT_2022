@@ -19,7 +19,7 @@ def on_subscribe(client, userdata, mid, granted_qos, properties=None):
 
 
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload.encode('utf-8')))
 
 
 client = paho.Client(client_id="RPI Client", userdata=None, protocol=paho.MQTTv5)
@@ -31,6 +31,7 @@ client.on_subscribe = on_subscribe
 client.on_message = on_message
 client.on_publish = on_publish
 
+previous_color = None
 current_color = None
 try:
     GPIO.setmode(GPIO.BOARD)
@@ -51,13 +52,15 @@ try:
                 if RFID_UID == uid:
                     GPIO.output(blueLedPin, GPIO.LOW)
                     GPIO.output(greenLedPin, GPIO.HIGH)
+                    previous_color = current_color
                     current_color = 'blue'
                 else:
                     GPIO.output(greenLedPin, GPIO.LOW)
                     GPIO.output(blueLedPin, GPIO.HIGH)
+                    previous_color = current_color
                     current_color = 'green'
 
-                if current_color is not None:
+                if current_color is not None and previous_color != current_color:
                     client.publish('itis/team_9/led/color', f'Color changed to: {current_color}')
 
                 time.sleep(1)
