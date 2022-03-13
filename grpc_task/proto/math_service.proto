@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package grpc;
+
+ message IntRequest {
+   int32 numInt = 1;
+ }
+
+ message IntResponse {
+   int32 numInt = 1;
+ }
+
+ message FloatResponse {
+   float numFloat = 1;
+ }
+
+ message FloatRequest {
+   float numFloat = 1;
+ }
+
+ service MathService {
+   rpc Sqrt(IntRequest) returns (FloatResponse);
+   rpc Std(stream IntRequest) returns (FloatResponse);
+   rpc Factor(IntRequest) returns (stream IntResponse);
+   rpc Max(stream IntRequest) returns (stream IntResponse);
+ }
